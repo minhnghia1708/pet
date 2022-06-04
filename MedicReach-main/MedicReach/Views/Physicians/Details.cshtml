@@ -1,0 +1,60 @@
+﻿@model PhysicianServiceModel
+
+@{ ViewData["Title"] = "Thông tin Bác Sĩ"; }
+
+<div class="jumbotron offset-lg-2 col-lg-8 col-sm-12">
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: 18rem; ">
+                <img class="card-img-top" src="@Model.ImageUrl">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Bác Sĩ:  @Model.FullName</h5>
+                    <p>Chuyên môn: @Model.Speciality</p>
+                    <p>Chi Phí: <i class="bi bi-currency-euro"></i>@Model.ExaminationPrice</p>
+                    <p>Giới Tính: @Model.Gender</p>
+                    <p>@nameof(Model.Gender): @Model.Gender</p>
+                    <p>Địa chỉ: @Model.Address</p>
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" role="button" asp-controller="Appointments" asp-action="Book" asp-route-physicianId="@Model.Id">Đặt lịch hẹn</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card float-right" style="width: 18rem; height: 24rem;">
+                @if (Model.AverageRating != 0)
+                {
+                    <h5 class="card-title align-self-center">Average Rating: @Model.AverageRating</h5>
+                }
+                <div class="card-body">
+                    @if (Model.LastReview != null)
+                    {
+                    <div class="card-body">
+                        <h5 class="text-center">Bài đánh giá mới nhất</h5>
+                        <div class="pb-2 text-center">
+                            <h4>
+                                @for (int i = 0; i < Model.LastReview.Rating; i++)
+                                {
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                            </h4>
+                        </div>
+                        <p>@Model.LastReview.Comment</p>
+                        <p>Written On: @Model.LastReview.CreatedOn.ToString("d")</p>
+                        <p class="lead">
+                            <a class="btn btn-primary btn-lg" role="button" asp-controller="Reviews" asp-action="All" asp-route-physicianId="@Model.Id">Kiểm tra tất cả bài đánh giá</a>
+                        </p>
+                    </div>
+                    }
+                    else
+                    {
+                        <div class="card-body">
+                            <p class="text-center">@Model.FullName chưa được xem xét.</p>
+                            <h3 class="text-center"><i class="bi bi-star text-warning"></i></h3>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

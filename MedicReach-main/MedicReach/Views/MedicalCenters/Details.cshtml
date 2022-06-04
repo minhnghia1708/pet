@@ -1,0 +1,22 @@
+﻿@model MedicalCenterServiceModel
+
+@{ ViewData["Title"] = "Chi tiết Cơ sở";
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">@Model.Name @Model.Type</h1>
+    <div class="col-md-4" style="width: 18rem;">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Medical Center image">
+    </div>
+    <hr class="my-4">
+    <p>Địa chỉ: @Model.Address</p>
+    <p>Thành phố: @Model.City</p>
+    <p>Quốc gia: @Model.Country</p>
+    <hr class="my-4">
+    <p>@Model.Description</p>
+    <hr class="my-4">
+    <p>Hiện đang có @Model.PhysiciansCount bác sĩ đang làm việc trong cơ sở này.</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" role="button" asp-controller="Physicians" asp-action="All" asp-route-MedicalCenter="@Model.Name">Lựa chọn bác sĩ của bạn</a>
+    </p>
+</div>

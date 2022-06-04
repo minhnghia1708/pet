@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MedicReach.Services.Physicians
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IPhysicianService Physicians
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var userId = User.GetId();
+        var userIsPhysician = User.IsPhysician();
+        var userIsPatient = User.IsPatient();
+        var userIsAdmin = User.IsAdmin();
+
+        @if (!userIsPhysician && !userIsPatient && !userIsAdmin)
+        {
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chọn Vai Trò</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Bác Sĩ</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Become">Bệnh Nhân</a>
+                    </div>
+                </div>
+            </li>
+        }
+        @if (!userIsAdmin && userIsPhysician)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Mine">Lịch Hẹn</a>
+            </li>
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kiểm Tra và Chỉnh Sửa</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Mine">Hồ Sơ</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="MedicalCenters" asp-action="Mine">Pet Zone</a>
+                    </div>
+                </div>
+            </li>
+        }
+        @if (!userIsAdmin && userIsPatient)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Mine">Lịch Hẹn</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Edit">Hồ Sơ</a>
+            </li>
+        }
+        @if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Thêm mới</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Specialities" asp-action="Add">Chuyên Môn</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="MedicalCenterTypes" asp-action="Add">Cơ Sở</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cities" asp-action="Add">Thành Phố</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Countries" asp-action="Add">Quốc Gia</a>
+                    </div>
+                </div>
+            </li>
+        }
+        @if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hệ thống Quản Lý</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Physicians" asp-action="All">Bác Sĩ</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="MedicalCenters" asp-action="All">Cơ Sở</a>
+                    </div>
+                </div>
+            </li>
+        }
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài Khoản</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Đăng Xuất</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Đăng Kí</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Đăng Nhập</a>
+        </li>
+    }
+</ul>
+
